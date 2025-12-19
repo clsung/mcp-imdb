@@ -2,11 +2,24 @@
 FROM python:3.12-slim-bookworm
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
+# Install system dependencies required for building Python packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    g++ \
+    make \
+    libxml2-dev \
+    libxslt-dev \
+    zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 # Copy the application into the container.
-COPY . /app
+WORKDIR /app
+COPY pyproject.toml uv.lock /app/
 
 # Install the application dependencies.
-WORKDIR /app
+RUN uv sync --frozen --no-cache --no-install-project
+
+COPY . /app
 RUN uv sync --frozen --no-cache
 
 # Expose the port
