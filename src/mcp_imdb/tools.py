@@ -1,5 +1,4 @@
 import asyncio
-from fastapi import FastAPI, HTTPException, Query, Depends
 from pydantic import BaseModel, Field
 from typing import List, Dict, Any, Optional
 import logging
@@ -305,7 +304,11 @@ async def fetch_movie_details(movie_id: str) -> MovieDetails:
         # Extract director(s)
         directors = []
         if 'director' in movie:
-            directors = [director.get('name') for director in movie.get('director', [])]
+            directors_data = movie.get('director', [])
+            if isinstance(directors_data, list):
+                directors = [director.get('name') for director in directors_data]
+            else:
+                 directors = [directors_data.get('name')]
         
         # Extract cast
         cast = []
