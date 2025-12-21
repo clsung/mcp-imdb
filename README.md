@@ -94,7 +94,7 @@ You can also use Docker Compose to run the server. Create a `docker-compose.yml`
 ```yaml
 services:
   mcp-imdb:
-    image: ghcr.io/clsung/mcp-imdb:latest
+    image: ghcr.io/juanmandev/mcp-imdb:latest
     build: .
     ports:
       - "8000:8000"
@@ -104,6 +104,21 @@ services:
 Then run:
 ```bash
 docker-compose up -d
+```
+
+### Connecting VS Code GitHub Copilot to Docker
+
+Once the server is running via Docker, add the following to your VS Code `settings.json`:
+
+```json
+{
+  "github.copilot.chat.mcpServers": {
+    "mcp-imdb": {
+      "type": "sse",
+      "url": "http://localhost:8000/sse"
+    }
+  }
+}
 ```
 
 ## Development
