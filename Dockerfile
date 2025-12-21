@@ -10,17 +10,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxml2-dev \
     libxslt-dev \
     zlib1g-dev \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the application into the container.
 WORKDIR /app
 COPY pyproject.toml uv.lock /app/
 
-# Install the application dependencies.
-RUN uv sync --frozen --no-cache --no-install-project
+# Install the application dependencies (without frozen to allow git deps)
+RUN uv sync --no-cache --no-install-project
 
 COPY . /app
-RUN uv sync --frozen --no-cache
+RUN uv sync --no-cache
 
 # Expose the port
 EXPOSE 8000

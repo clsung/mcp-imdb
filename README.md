@@ -87,6 +87,25 @@ docker run -p 8000:8000 mcp-imdb
 
 The server will be available at `http://localhost:8000/sse` for SSE connections and `http://localhost:8000/messages/` for POST messages.
 
+### Docker Compose
+
+You can also use Docker Compose to run the server. Create a `docker-compose.yml` file:
+
+```yaml
+services:
+  mcp-imdb:
+    image: ghcr.io/clsung/mcp-imdb:latest
+    build: .
+    ports:
+      - "8000:8000"
+    restart: always
+```
+
+Then run:
+```bash
+docker-compose up -d
+```
+
 ## Development
 
 ### Building and Publishing
