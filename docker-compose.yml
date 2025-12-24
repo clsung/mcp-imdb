@@ -1,0 +1,7 @@
+services:
+  mcp-imdb:
+    image: ghcr.io/clsung/mcp-imdb:latest
+    build: .
+    ports:
+      - "8000:8000"
+    restart: always

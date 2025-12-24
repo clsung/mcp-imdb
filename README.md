@@ -1,6 +1,7 @@
 # mcp-imdb MCP server
 
-A Model Context Protocol (MCP) server for accessing IMDB data
+A Model Context Protocol (MCP) server for accessing IMDB data.
+Original author: [Cheng-Lung Sung](https://github.com/clsung/mcp-imdb)
 
 ## Components
 
@@ -67,6 +68,58 @@ On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
   }
   ```
 </details>
+
+## Docker
+
+You can run the server as an HTTP SSE (Server-Sent Events) server using Docker.
+
+### Building the Docker Image
+
+```bash
+docker build -t mcp-imdb .
+```
+
+### Running the Docker Image
+
+```bash
+docker run -p 8000:8000 mcp-imdb
+```
+
+The server will be available at `http://localhost:8000/sse` for SSE connections and `http://localhost:8000/messages/` for POST messages.
+
+### Docker Compose
+
+You can also use Docker Compose to run the server. Create a `docker-compose.yml` file:
+
+```yaml
+services:
+  mcp-imdb:
+    image: ghcr.io/juanmandev/mcp-imdb:latest
+    build: .
+    ports:
+      - "8000:8000"
+    restart: always
+```
+
+Then run:
+```bash
+docker-compose up -d
+```
+
+### Connecting VS Code GitHub Copilot to Docker
+
+Once the server is running via Docker, add the following to your VS Code `settings.json`:
+
+```json
+{
+  "github.copilot.chat.mcpServers": {
+    "mcp-imdb": {
+      "type": "sse",
+      "url": "http://localhost:8000/sse"
+    }
+  }
+}
+```
 
 ## Development
 
